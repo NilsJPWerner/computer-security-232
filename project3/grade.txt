@@ -1,0 +1,134 @@
+fProject 3 Grade Sheet
+
+njpwerner
+
+###############################Autograde results################################
+
+Assessment Summary
+
+Compilation:  PASSED
+Style:        PASSED
+Findbugs:     Potential bugs found.
+API:          PASSED
+
+Correctness:  4/4 tests passed
+Memory:       No tests available for autograding.
+Timing:       No tests available for autograding.
+
+Assessment Details
+
+files submitted
+----------------------------------
+total 112
+-rw-r--r--+ 1    497B Oct 30 22:33 00-checkme.html
+-rw-r--r--+ 1    2.7K Oct 30 22:33 ChannelTest.java
+-rw-r--r--+ 1    3.5K Oct 30 22:33 InsecureChannel.java
+-rw-r--r--+ 1    2.6K Nov  6 16:48 README
+-rw-r--r--+ 1    5.6K Nov  6 16:48 SecureChannel.java
+-rw-r--r--+ 1    5.5K Oct 30 22:33 SecureChannelTest.java
+-rw-r--r--+ 1    1.2K Oct 30 22:33 SecureChannelUtils.java
+-rw-r--r--+ 1    6.8K Oct 30 22:33 project1.jar
+-rw-r--r--+ 1    9.5K Oct 30 22:33 project2.jar
+
+
+******************************************************************************
+*  compiling
+******************************************************************************
+
+
+% javac SecureChannel.java
+*-----------------------------------------------------------
+================================================================
+
+
+
+% findbugs *.class
+*-----------------------------------------------------------
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.aesKey from instance method new SecureChannel(InputStream, OutputStream, PRGen, boolean, RSAKey)  At SecureChannel.java:[line 77]
+H D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.prg from instance method new SecureChannel(InputStream, OutputStream, PRGen, boolean, RSAKey)  At SecureChannel.java:[line 40]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.aesEncrypt from instance method new SecureChannel(InputStream, OutputStream, PRGen, boolean, RSAKey)  At SecureChannel.java:[line 78]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.aesDecrypt from instance method new SecureChannel(InputStream, OutputStream, PRGen, boolean, RSAKey)  At SecureChannel.java:[line 79]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.nonce from instance method new SecureChannel(InputStream, OutputStream, PRGen, boolean, RSAKey)  At SecureChannel.java:[line 81]
+H D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.nonce from instance method SecureChannel.sendMessage(byte[])  At SecureChannel.java:[line 119]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.encryptedMessage from instance method SecureChannel.sendMessage(byte[])  At SecureChannel.java:[line 121]
+H D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.encryptedMessage from instance method SecureChannel.receiveMessage()  At SecureChannel.java:[line 126]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field SecureChannel.decryptedMessage from instance method SecureChannel.receiveMessage()  At SecureChannel.java:[line 130]
+M V EI_EXPOSE_REP EI: SecureChannel.receiveMessage() may expose internal representation by returning decryptedMessage  At SecureChannel.java:[line 131]
+M V MS_PKGPROTECT MS: SecureChannel.prg should be package protected  In SecureChannel.java
+M V MS_PKGPROTECT MS: SecureChannel.aesKey should be package protected  In SecureChannel.java
+M V MS_PKGPROTECT MS: SecureChannel.aesEncrypt should be package protected  In SecureChannel.java
+M V MS_PKGPROTECT MS: SecureChannel.aesDecrypt should be package protected  In SecureChannel.java
+M V MS_PKGPROTECT MS: SecureChannel.nonce should be package protected  In SecureChannel.java
+M V MS_PKGPROTECT MS: SecureChannel.encryptedMessage should be package protected  In SecureChannel.java
+M V MS_PKGPROTECT MS: SecureChannel.decryptedMessage should be package protected  In SecureChannel.java
+Warnings generated: 17
+================================================================
+
+
+Testing the APIs of your programs.
+*-----------------------------------------------------------
+================================================================
+
+
+******************************************************************************
+*  executing
+******************************************************************************
+
+Testing methods in SecureChannel
+*-----------------------------------------------------------
+Running 4 total tests.
+
+Test 1: Client sends 10 messages, and server echoes them back.
+        Test will succeed if all 10 messages are successfully echoed.
+==> passed
+
+Test 2: Server sends 10 messages, and client echoes them back.
+        Test will succeed if all 10 messages are successfully echoed.
+==> passed
+
+Test 3: Client sends 20 messages, and server echoes them back. All bytes of first message are corrupted.
+        Test will succeed if NO messages reach their destination.
+receiveMessageSafe: Echoer thread ending. Starter -> Echoer channel is closed. Receive returned null, possibly because the incoming message couldn't be authenticated.
+==> passed, messages sent: 1, messages received: 0
+
+Test 4: Client sends 20 messages, and server echoes them back. Bytes are corrupted during channel creation.
+        Test will succeed if NO messages reach their destination.
+Exception in thread "Thread-6" java.lang.AssertionError
+	at Proj2Util.bigIntegerToBytes(Proj2Util.java:62)
+	at RSAKey.decrypt(RSAKey.java:120)
+	at RSAKey.verifySignature(RSAKey.java:148)
+	at SecureChannel.<init>(SecureChannel.java:72)
+	at TestSecureChannel.run(TestSecureChannel.java:145)
+	at java.lang.Thread.run(Thread.java:745)
+Server thread died constructing SecureChannel
+Cause:
+java.io.IOException: Pipe broken
+	at java.io.PipedInputStream.read(PipedInputStream.java:321)
+	at java.io.DataInputStream.readInt(DataInputStream.java:387)
+	at InsecureChannel.receiveMessage(InsecureChannel.java:69)
+	at SecureChannel.<init>(SecureChannel.java:90)
+	at TestSecureChannel.run(TestSecureChannel.java:145)
+	at java.lang.Thread.run(Thread.java:745)
+==> passed, messages sent: 0, messages received: 0
+
+Total: 4/4 tests passed!
+
+================================================================
+
+
+
+#############################End autograde results##############################
+
+General Errors: 0/0
+
+
+SecureChannel.java 62/72
+-6: Vulnerable to reflection attacks; uses the same symmetric key for A=>B and B=>A
+-4: Vulnerable to message reordering attacks.
+
+README 8/8
+AuthEncryptor/Decryptor don't protect against message reordering on their own. That has to be done by, for example, having the recipient expect each message to have a specific unique nonce.
+
+total: 70.0/80
+
+grader: arielfeldman

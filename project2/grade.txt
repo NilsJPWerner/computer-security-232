@@ -1,0 +1,366 @@
+Project 2 Grade Sheet
+
+njpwerner
+
+###############################Autograde results################################
+
+Assessment Summary
+
+Compilation:  PASSED
+Style:        PASSED
+Findbugs:     Potential bugs found.
+API:          PASSED
+
+Correctness:  14/21 tests passed
+Memory:       No tests available for autograding.
+Timing:       No tests available for autograding.
+
+Assessment Details
+
+files submitted
+----------------------------------
+total 80
+-rw-r--r--  1    497B Oct 22 00:40 00-checkme.html
+-rw-r--r--  1    951B Oct 22 00:40 DHParams.java
+-rw-r--r--  1    3.3K Oct 31 18:49 KeyExchange.java
+-rw-r--r--  1    2.8K Oct 22 00:40 Proj2Util.java
+-rw-r--r--  1    8.8K Oct 31 18:49 RSAKey.java
+-rw-r--r--  1    1.5K Oct 31 18:49 RSAKeyPair.java
+-rw-r--r--  1    6.8K Oct 22 00:40 project1.jar
+
+
+******************************************************************************
+*  compiling
+******************************************************************************
+
+
+% javac RSAKeyPair.java
+*-----------------------------------------------------------
+================================================================
+
+% javac RSAKey.java
+*-----------------------------------------------------------
+================================================================
+
+% javac KeyExchange.java
+*-----------------------------------------------------------
+================================================================
+
+
+
+% findbugs *.class
+*-----------------------------------------------------------
+M D DLS_DEAD_LOCAL_STORE DLS: Dead store to $L7 in RSAKey.main(String[])  At RSAKey.java:[line 182]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.g from instance method new KeyExchange(PRGen)  At KeyExchange.java:[line 42]
+H D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.myPRGen from instance method new KeyExchange(PRGen)  At KeyExchange.java:[line 41]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.a from instance method new KeyExchange(PRGen)  At KeyExchange.java:[line 44]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.p from instance method new KeyExchange(PRGen)  At KeyExchange.java:[line 43]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.moddedA from instance method KeyExchange.prepareOutMessage()  At KeyExchange.java:[line 48]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.moddedB from instance method KeyExchange.processInMessage(byte[])  At KeyExchange.java:[line 57]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field KeyExchange.s from instance method KeyExchange.processInMessage(byte[])  At KeyExchange.java:[line 58]
+M V MS_PKGPROTECT MS: KeyExchange.g should be package protected  In KeyExchange.java
+M V MS_PKGPROTECT MS: KeyExchange.p should be package protected  In KeyExchange.java
+M V MS_PKGPROTECT MS: KeyExchange.a should be package protected  In KeyExchange.java
+M V MS_PKGPROTECT MS: KeyExchange.moddedA should be package protected  In KeyExchange.java
+M V MS_PKGPROTECT MS: KeyExchange.moddedB should be package protected  In KeyExchange.java
+M V MS_PKGPROTECT MS: KeyExchange.s should be package protected  In KeyExchange.java
+M V MS_PKGPROTECT MS: KeyExchange.myPRGen should be package protected  In KeyExchange.java
+Warnings generated: 15
+================================================================
+
+
+Testing the APIs of your programs.
+*-----------------------------------------------------------
+================================================================
+
+
+******************************************************************************
+*  executing
+******************************************************************************
+
+Testing methods in RSAKeyPair
+*-----------------------------------------------------------
+Running 3 total tests.
+
+Test 1: Testing that creating an RSAKeyPair object does not cause an exception or assertion failure.
+  *  Instantiating a reference PRG [you should not submit your PRGen.java]
+  *  Creating RSAKeyPair(prg, 512)
+  *  Creating another RSAKeyPair(prg, 512)
+==> passed
+
+Test 2: Testing that output of .getPrimes() are both prime
+  *  Testing with 512 bit primes
+  *  Testing with 768 bit primes
+  *  Testing with 1024 bit primes
+==> passed
+
+Test 3: Testing e, d, and modulus
+  *  Testing with 512 bit primes
+==> passed
+
+Total: 3/3 tests passed!
+
+================================================================
+
+******************************************************************************
+*  executing
+******************************************************************************
+
+Testing methods in RSAKey
+*-----------------------------------------------------------
+Running 12 total tests.
+
+Test 1: Testing that creating an RSAKey object does not cause an exception or assertion failure (test disabled).
+==> passed
+
+Test 2: Sanity checking that maxPlainTextLength() fails within reasonable bounds (not-shown). Does not guarantee correctness!
+==> passed
+
+Test 3: Testing that encrypt and decrypt are symmetric on all zeros-array of length maxPlaintextLength().
+  *  Creating public RSAKey using 440 bit key
+  *  public key maxPlaintextLength: 44, private key maxPlaintextLength: 44
+  *  Performing symmetry testing
+    -  Encrypting: ciphertext = publicKey.encrypt(plaintext)
+    -  Decrypting: recovered = privateKey.decrypt(ciphertext)
+     java.lang.ArrayIndexOutOfBoundsException
+     java.lang.System.arraycopy(Native Method)
+     RSAKey.removePadding(RSAKey.java:151)
+     RSAKey.decodeOaep(RSAKey.java:126)
+     ...
+     TestRSAKey.testEncryptionDecryptionAreSymmetric(TestRSAKey.java:106)
+     TestRSAKey.encryptZerosAndDecryptAreSymmetric(TestRSAKey.java:144)
+     TestRSAKey.main(TestRSAKey.java:979)
+
+==> FAILED
+  *  Repeating symmetry test 10 more times with the same keys and messages
+     This ensures that your methods work for all outputs of any PRGens you may use.
+     java.lang.ArrayIndexOutOfBoundsException
+     java.lang.System.arraycopy(Native Method)
+     RSAKey.removePadding(RSAKey.java:151)
+     RSAKey.decodeOaep(RSAKey.java:126)
+     ...
+     TestRSAKey.testEncryptionDecryptionAreSymmetric(TestRSAKey.java:106)
+     TestRSAKey.encryptZerosAndDecryptAreSymmetric(TestRSAKey.java:150)
+     TestRSAKey.main(TestRSAKey.java:979)
+
+==> FAILED
+     Failure was on 0th trial
+==> FAILED
+
+    If you're seeing an assertion failure on Dropbox, but not on your local system, make sure you're testing your code with the -ea flag enabled!
+Test 4: Testing that encrypt and decrypt are symmetric on all ones-array [0xFF 0xFF ... 0xFF] of length maxPlaintextLength().
+  *  Creating public RSAKey using 440 bit key
+  *  public key maxPlaintextLength: 44, private key maxPlaintextLength: 44
+  *  Performing symmetry testing
+    -  Encrypting: ciphertext = publicKey.encrypt(plaintext)
+    -  Decrypting: recovered = privateKey.decrypt(ciphertext)
+     java.lang.ArrayIndexOutOfBoundsException
+     java.lang.System.arraycopy(Native Method)
+     RSAKey.removePadding(RSAKey.java:151)
+     RSAKey.decodeOaep(RSAKey.java:126)
+     ...
+     TestRSAKey.testEncryptionDecryptionAreSymmetric(TestRSAKey.java:106)
+     TestRSAKey.encryptOnesAndDecryptAreSymmetric(TestRSAKey.java:200)
+     TestRSAKey.main(TestRSAKey.java:980)
+
+==> FAILED
+  *  Repeating symmetry test 10 more times with the same keys and messages
+     This ensures that your methods work for all outputs of any PRGens you may use.
+     java.lang.ArrayIndexOutOfBoundsException
+     java.lang.System.arraycopy(Native Method)
+     RSAKey.removePadding(RSAKey.java:151)
+     RSAKey.decodeOaep(RSAKey.java:126)
+     ...
+     TestRSAKey.testEncryptionDecryptionAreSymmetric(TestRSAKey.java:106)
+     TestRSAKey.encryptOnesAndDecryptAreSymmetric(TestRSAKey.java:206)
+     TestRSAKey.main(TestRSAKey.java:980)
+
+==> FAILED
+     Failure was on 0th trial
+==> FAILED
+
+    If you're seeing an assertion failure on Dropbox, but not on your local system, make sure you're testing your code with the -ea flag enabled!
+Test 5: Testing that encrypt and decrypt are symmetric on arrays of random value and random length
+  *  public key maxPlaintextLength: 44, private key maxPlaintextLength: 44
+  *  Performing 64 tests on plaintexts of lengths between 1 and 22
+     java.lang.ArrayIndexOutOfBoundsException
+     java.lang.System.arraycopy(Native Method)
+     RSAKey.removePadding(RSAKey.java:151)
+     RSAKey.decodeOaep(RSAKey.java:126)
+     ...
+     TestRSAKey.testEncryptionDecryptionAreSymmetric(TestRSAKey.java:106)
+     TestRSAKey.encryptRandomAndDecryptAreSymmetric(TestRSAKey.java:249)
+     TestRSAKey.main(TestRSAKey.java:981)
+
+==> FAILED
+     Failure was on 0th trial
+  *  Performing 64 tests on plaintexts of lengths between 1 and 44
+     java.lang.ArrayIndexOutOfBoundsException
+     java.lang.System.arraycopy(Native Method)
+     RSAKey.removePadding(RSAKey.java:151)
+     RSAKey.decodeOaep(RSAKey.java:126)
+     ...
+     TestRSAKey.testEncryptionDecryptionAreSymmetric(TestRSAKey.java:106)
+     TestRSAKey.encryptRandomAndDecryptAreSymmetric(TestRSAKey.java:264)
+     TestRSAKey.main(TestRSAKey.java:981)
+
+==> FAILED
+     Failure was on 0th trial
+==> FAILED
+
+Test 6: Testing that sign and verify are symmetric on arrays of random value and random length
+  *  public key maxPlaintextLength: 44, private key maxPlaintextLength: 44
+  *  Performing 64 tests on plaintexts of lengths between 1 and 22
+     java.lang.AssertionError
+     Proj2Util.bigIntegerToBytes(Proj2Util.java:62)
+     RSAKey.sign(RSAKey.java:49)
+     TestRSAKey.signRandomAndVerifySymmetric(TestRSAKey.java:307)
+     TestRSAKey.main(TestRSAKey.java:982)
+
+==> FAILED
+Test 7: Testing various properties of the output of encrypt
+  *  Testing that output.length is greater >= 2 when encrypting a 1 byte input
+     , output.length was 109
+  *  Testing that output is different when encrypting same 1 byte input twice
+  *  Testing that output value is between 0 and modulus-1 for inputs of random length and content
+  *  Testing that encrypt() gives different output for byte[]{0, 1} and byte[]{1}
+  *  Testing that encrypt() gives different output for byte[]{0, 0, 1} and byte[]{0, 1}
+==> passed
+
+Test 8: Testing various properties of OAEP output. This test may not be meaningful unless you've passed the tests above.
+   More specific tests are included below
+  *  Testing that OAEP output is greater >= 33 when encrypting a 1 byte input
+     approximateOAEPoutput.length was 110
+  *  Testing that encrypted BigInt is different from decrypted BigInt for a 1 byte input
+  *  Testing that OAEP output is different for byte[]{0, 1} and byte[]{1}
+  *  Testing that OAEP output is >= input.length + 32 when encrypting random length inputs,
+     and that encrypted BigInt is different from decrypted BigInt for same random length inputs
+==> passed
+
+Test 9: Testing .sign().
+  *  Performing 64 tests on plaintexts of lengths between 1 and 44
+     java.lang.AssertionError
+     Proj2Util.bigIntegerToBytes(Proj2Util.java:62)
+     RSAKey.sign(RSAKey.java:49)
+     TestRSAKey.testSign(TestRSAKey.java:618)
+     TestRSAKey.main(TestRSAKey.java:985)
+
+==> FAILED
+Test 10: Testing .sign() and verify() are symmetric.
+  *  Validating signatures, 64 tests on plaintexts of lengths between 1 and 44
+     java.lang.AssertionError
+     Proj2Util.bigIntegerToBytes(Proj2Util.java:62)
+     RSAKey.sign(RSAKey.java:49)
+     TestRSAKey.testSignAndVerifyAreSymmetric(TestRSAKey.java:676)
+     TestRSAKey.main(TestRSAKey.java:986)
+
+==> FAILED
+Test 11: Testing various properties of OAEP output using encodeOAEP and decodeOAEP
+    Note: This code assumes a minimum plaintext padding length of 1 during OAEP
+  *  Testing that encodeOAEP and decodeOAEP are inverses
+    FAILED: the decoded OAEP message is different than the input message
+        Input Message:
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+        Decoded Message:
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 0]
+  *  Testing that inverse property holds over 10 random inputs
+    FAILED: the decoded OAEP message is different than the input message on the 0th trial
+        Input Message:
+        [-73, 33, -94, 20, 55, 108, -29, 75, 46, 118, -126, -22, 36, 84, -71, 60, 113, 17, 56, -86, -56, 2, -120, -36, -9, 100, -18, -81, 121, -36, -114, 106, 50, -106, 27, -26, -58, -119, 80, 64, 119, -40, 42, -64, -119, 114, -36, -14, -26, -126, -70, 22, 6, -8, 108, 114, 108, -7, 41, -32]
+        Decoded Message:
+        [-73, 33, -94, 20, 55, 108, -29, 75, 46, 118, -126, -22, 36, 84, -71, 60, 113, 17, 56, -86, -56, 2, -120, -36, -9, 100, -18, -81, 121, -36, -114, 106, 50, -106, 27, -26, -58, -119, 80, 64, 119, -40, 42, -64, -119, 114, -36, -14, -26, -126, -70, 22, 6, -8, 108, 114, 108, -7, 41, 0]
+  *  Testing that encodeOAEP adds an acceptable amount of padding, i.e. [32, 64] bytes
+  *  Testing that output of encodeOAEP is different with different PRGens
+  *  Testing that decodeOAEP checks for integrity constants after decoding
+    ==> Exception or assertion thrown (acceptable)
+     FAILED: decodeOAEP failed to return null or throw and error/assertion
+==> FAILED
+
+Test 12: Testing various properties of message padding using addPadding and removePadding
+  *  Testing that addPadding and removePadding are inverses
+  *  Testing that inverse property holds for messages of all lengths
+  *  Testing that addPadding adds 1 byte when padding a message of len maxPlaintextLength
+  *  Testing that padded message is always the expected length
+     --> Expected padded length is maxPlainTextLength() + 1
+     --> which is 60 bytes in this case
+  *  Testing that padding works when message contains probable padding byte
+==> passed
+
+Total: 5/12 tests passed!
+
+================================================================
+
+******************************************************************************
+*  executing
+******************************************************************************
+
+Testing methods in KeyExchange
+*-----------------------------------------------------------
+Running 6 total tests.
+
+Test 1: Testing that creating a pair of KeyExchange objects does not cause an exception or assertion failure.
+==> passed
+
+Test 2a: Testing that output is not null for correctly prepared out message.
+==> passed
+
+Test 2b: Testing that server and client agree on digest value.
+==> passed
+
+Test 3: Testing that output size matches OutputSizeBytes.
+==> passed
+
+Test 4: Testing vulnerability to man in the middle attacks.
+==> passed
+
+Test 5: Testing that processIn always generates same value for same message.
+==> passed
+
+Total: 6/6 tests passed!
+
+================================================================
+
+
+
+#############################End autograde results##############################
+
+General Errors: 0/0
+
+
+RSAKey.java: 
+
+    OAEP in .encrypt() 14/15
+    
+
+    OAEP in .decrypt() 10/10
+    
+
+    maxPlaintextLength 4/4
+    
+
+    .encrypt() 3/6
+    
+
+    .decrypt() 6/6
+    
+
+    .sign() 6/6
+    
+
+    .verify() 6/6
+    
+
+    penalties 0/0
+    
+
+    RSAKey.java total: 49.0/53
+
+RSAKeyPair.java 10/10
+
+
+KeyExchange.java 17/17
+
+
+total: 76.0/80
+
+grader: Yun

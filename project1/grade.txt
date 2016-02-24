@@ -1,0 +1,334 @@
+Project 1 Grade Sheet
+
+njpwerner
+
+###############################Autograde results################################
+
+Assessment Summary
+
+Compilation:  PASSED
+Style:        PASSED
+Findbugs:     Potential bugs found.
+API:          PASSED
+
+Correctness:  7/22 tests passed
+Memory:       No tests available for autograding.
+Timing:       No tests available for autograding.
+
+Assessment Details
+
+files submitted
+----------------------------------
+total 64
+-rw-r--r--  1    497B Oct  5 15:21 00-checkme.html
+-rw-r--r--  1    2.5K Oct 20 15:41 AuthDecryptor.java
+-rw-r--r--  1    3.6K Oct 20 15:41 AuthEncryptor.java
+-rw-r--r--  1    4.8K Oct  5 15:21 PRF.java
+-rw-r--r--  1    2.3K Oct 20 15:41 PRGen.java
+-rw-r--r--  1    2.5K Oct 20 15:41 StreamCipher.java
+-rw-r--r--  1    479B Oct  5 15:21 TrueRandomness.java
+
+
+******************************************************************************
+*  compiling
+******************************************************************************
+
+
+% javac PRGen.java
+*-----------------------------------------------------------
+================================================================
+
+% javac StreamCipher.java
+*-----------------------------------------------------------
+================================================================
+
+% javac AuthEncryptor.java
+*-----------------------------------------------------------
+================================================================
+
+% javac AuthDecryptor.java
+*-----------------------------------------------------------
+================================================================
+
+
+
+% findbugs *.class
+*-----------------------------------------------------------
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field PRGen.seed from instance method new PRGen(byte[])  At PRGen.java:[line 30]
+M D ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD ST: Write to static field StreamCipher.originalkey from instance method new StreamCipher(byte[])  At StreamCipher.java:[line 24]
+M V EI_EXPOSE_REP EI: AuthDecryptor.decrypt(byte[], byte[], boolean) may expose internal representation by returning plaintext  At AuthDecryptor.java:[line 72]
+M V EI_EXPOSE_REP2 EI2: AuthDecryptor.decrypt(byte[], byte[], boolean) may expose internal representation by storing an externally mutable object into inputnonce  At AuthDecryptor.java:[line 51]
+M V EI_EXPOSE_REP EI: AuthEncryptor.encrypt(byte[], byte[], boolean) may expose internal representation by returning output  At AuthEncryptor.java:[line 69]
+M V MS_PKGPROTECT MS: PRGen.seed should be package protected  At PRGen.java:[line 26]
+Warnings generated: 6
+================================================================
+
+
+Testing the APIs of your programs.
+*-----------------------------------------------------------
+================================================================
+
+
+******************************************************************************
+*  executing
+******************************************************************************
+
+Testing methods in PRGen
+*-----------------------------------------------------------
+Running 8 total tests.
+
+
+Test 1a-1d: Testing core properties of your PRG
+  *  Output of prg.next() is deterministic
+     Failed: Different 32-bit value returned by prg.next(32) and prg1.next(32), where PRGs have same keys
+  *  Output of prg.next() depends on key passed to constructor
+  *  Two consecutive calls to prg.next(32) do not return the same value (2 << 2^32)
+  *  Out of 10 calls to prg.next(32), none return the same value (10 << 2^32)
+==> 3/4 tests passed
+
+Tests 2a-2d: Testing statistical properties of the output of your PRG
+  *  Testing distribution of 0s and 1s with calls to next(4)
+  *  Testing distribution of 0s and 1s with calls to next(32)
+  *  Testing range of values returned by next(4)
+  *  Testing range of values returned by next(32)
+==> 4/4 tests passed
+
+Total: 7/8 tests passed!
+
+
+Probe 1: Probing to see how your code reacts to weird inputs
+  *  Creating PRG with 0 byte key, then calling .next(32)
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:29)
+     TestPRGen.probeEmptyBehavior(TestPRGen.java:299)
+     TestPRGen.main(TestPRGen.java:358)
+
+  *  Requesting 0 bits using .next(0)
+     Output is 0
+  *  Requesting 33 bits using .next(33)
+     Output is 1610761879
+==> Probing completed (no-autograding of results)
+================================================================
+
+******************************************************************************
+*  compiling
+******************************************************************************
+
+
+% javac PRGen.java
+*-----------------------------------------------------------
+================================================================
+
+% javac StreamCipher.java
+*-----------------------------------------------------------
+================================================================
+
+% javac AuthEncryptor.java
+*-----------------------------------------------------------
+================================================================
+
+% javac AuthDecryptor.java
+*-----------------------------------------------------------
+================================================================
+
+
+
+******************************************************************************
+*  executing StreamCipher with reference PRGen
+******************************************************************************
+
+Testing methods in StreamCipher
+*-----------------------------------------------------------
+Running 5 total tests.
+
+Test 1: Testing distribution of the output of StreamCipher's .cryptByte() method
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:27)
+     StreamCipher.<init>(StreamCipher.java:25)
+     TestStreamCipher.testCryptByteEncryption(TestStreamCipher.java:89)
+     TestStreamCipher.main(TestStreamCipher.java:437)
+
+Test 2: Ensure that a decrypting StreamCipher can use .cryptByte() to correctly decrypt the output of an encrypting StreamCipher
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:27)
+     StreamCipher.<init>(StreamCipher.java:25)
+     TestStreamCipher.testCryptByteDecryption(TestStreamCipher.java:257)
+     TestStreamCipher.main(TestStreamCipher.java:438)
+
+Test 3: Testing distribution of the output of StreamCipher's .cryptBytes() method
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:27)
+     StreamCipher.<init>(StreamCipher.java:25)
+     TestStreamCipher.testCryptBytesEncryption(TestStreamCipher.java:172)
+     TestStreamCipher.main(TestStreamCipher.java:439)
+
+Test 4: Ensure that a decrypting StreamCipher can use .cryptBytes() to correctly decrypt the output of an encrypting StreamCipher
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:27)
+     StreamCipher.<init>(StreamCipher.java:25)
+     TestStreamCipher.testCryptBytesDecryption(TestStreamCipher.java:308)
+     TestStreamCipher.main(TestStreamCipher.java:440)
+
+
+Test 5: Ensure that cryptBytes returns different values for different nonces
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:27)
+     StreamCipher.<init>(StreamCipher.java:25)
+     TestStreamCipher.testNonce(TestStreamCipher.java:360)
+     TestStreamCipher.main(TestStreamCipher.java:441)
+
+
+Total: 0/5 tests passed!
+
+
+Probe 1: Testing how your code reacts to weird inputs
+  *  Creating StreamCipher with 0 byte key, then calling .cryptByte(127)
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:23)
+     TestStreamCipher.probeEmptyBehavior(TestStreamCipher.java:401)
+     TestStreamCipher.main(TestStreamCipher.java:446)
+
+  *  Creating StreamCipher with a good key, then calling .cryptBytes() with zero length inbuf and numBytes=1
+     java.lang.AssertionError
+     PRGen.<init>(PRGen.java:27)
+     StreamCipher.<init>(StreamCipher.java:25)
+     TestStreamCipher.probeEmptyBehavior(TestStreamCipher.java:414)
+     TestStreamCipher.main(TestStreamCipher.java:446)
+
+==> Probing completed (no-autograding of results)
+================================================================
+
+******************************************************************************
+*  compiling
+******************************************************************************
+
+
+% javac PRGen.java
+*-----------------------------------------------------------
+================================================================
+
+% javac StreamCipher.java
+*-----------------------------------------------------------
+================================================================
+
+% javac AuthEncryptor.java
+*-----------------------------------------------------------
+AuthEncryptor.java:64: error: cannot find symbol
+		output = streamCiph.concatByteArray(ciphertext, mactext); //concat the resulting 32byte mac with the cipher
+		                   ^
+  symbol:   method concatByteArray(byte[],byte[])
+  location: variable streamCiph of type StreamCipher
+AuthEncryptor.java:67: error: cannot find symbol
+			return streamCiph.concatByteArray(output, nonce); // concat the nonce to the cipher if includeNonce
+			                 ^
+  symbol:   method concatByteArray(byte[],byte[])
+  location: variable streamCiph of type StreamCipher
+2 errors
+================================================================
+
+% javac AuthDecryptor.java
+*-----------------------------------------------------------
+================================================================
+
+
+
+******************************************************************************
+*  executing AuthEncryptor and AuthDecryptor with reference PRGen and reference StreamCipher
+******************************************************************************
+
+Testing methods in AuthEncryptor
+*-----------------------------------------------------------
+Running 5 total tests.
+
+Test 1: Testing distribution of the output of AuthEncryptor's .encrypt() method
+  *  Testing that AuthEncryptor's encrypt() method generates an even distribution of 0s and 1s for an all 0 input
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:18)
+     AuthEncryptor.encrypt(AuthEncryptor.java:51)
+     TestAuthEncryptor.testEncryptedDataDistribution(TestAuthEncryptor.java:83)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:331)
+
+Test 2: Ensuring that the output of your AuthEncryptor is larger when input is larger with same nonce
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:18)
+     AuthEncryptor.encrypt(AuthEncryptor.java:51)
+     TestAuthEncryptor.testThatLargerInputMakesLargerOutput(TestAuthEncryptor.java:163)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:332)
+
+Test 3: Ensuring that two calls to .encrypt(inputData) with the same inputData and a different Nonce does not return the same output.
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:18)
+     AuthEncryptor.encrypt(AuthEncryptor.java:51)
+     TestAuthEncryptor.testRepeatedDataBehavior(TestAuthEncryptor.java:194)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:333)
+
+Test 4: Ensuring that the output of your AuthEncryptor is larger than the input (as a proxy for existence of MAC)
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:18)
+     AuthEncryptor.encrypt(AuthEncryptor.java:51)
+     TestAuthEncryptor.testThatOutputLargerThanInput(TestAuthEncryptor.java:231)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:334)
+
+Test 5: Ensuring that the length of AuthEncryptor output with nonce == AuthEncryptor without nonce + nonce size
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:18)
+     AuthEncryptor.encrypt(AuthEncryptor.java:51)
+     TestAuthEncryptor.testThatOutputWithNonceLarger(TestAuthEncryptor.java:265)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:335)
+
+Total: 0/5 tests passed!
+
+
+Probe 1: Probing to see how your code reacts to weird inputs
+  *  Creating AuthEncryptor with 0 byte key, then calling .encrypt(new byte[]{5, 6})
+     java.lang.AssertionError
+     AuthEncryptor.<init>(AuthEncryptor.java:27)
+     TestAuthEncryptor.probeEmptyBehavior(TestAuthEncryptor.java:290)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:339)
+
+  *  Creating AuthEncryptor with a good key, then calling .encrypt() on an empty input stream
+     java.lang.AssertionError
+     StreamCipher.<init>(StreamCipher.java:18)
+     AuthEncryptor.encrypt(AuthEncryptor.java:51)
+     TestAuthEncryptor.probeEmptyBehavior(TestAuthEncryptor.java:307)
+     TestAuthEncryptor.main(TestAuthEncryptor.java:339)
+
+
+==> Probing completed (no-autograding of results)
+================================================================
+
+Testing methods in AuthDecryptor
+*-----------------------------------------------------------
+Running 4 total tests.
+
+Test 1: Ensuring that your AuthDecryptor can correctly Decrypt a single message that was encrypted by your AuthEncryptor class
+Exception in thread "main" java.lang.AssertionError
+	at StreamCipher.<init>(StreamCipher.java:18)
+	at AuthEncryptor.encrypt(AuthEncryptor.java:51)
+	at TestAuthDecryptor.testDecryptorWorks(TestAuthDecryptor.java:88)
+	at TestAuthDecryptor.main(TestAuthDecryptor.java:349)
+
+Total: 0/4 tests passed:Test aborted. Ran out of time or crashed before completion.
+================================================================
+
+
+
+#############################End autograde results##############################
+
+General Errors: -2/0
+most tests not passed
+
+PRGen.java 28/30
+not forward securete. Advances state before output 
+
+StreamCipher.java 8/10
+different key size used.
+
+AuthEncryptor.java 30/30
+
+AuthDecryptor.java 8/10
+AuthDecryptor fails to return null for messages with incorrect nonce
+
+total: 72.0/80
+
+grader: Yun

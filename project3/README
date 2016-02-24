@@ -1,0 +1,23 @@
+Threat model: 
+
+I assume that ther might be Man in the Middle who can read and manipulate the messages sent. An attacker could use this capability to do replay attacks. An attacker might also try and break one session key and then get acces to all previous and future messages. Messages might also arrive in a different order. 
+
+Setup: 
+
+The first step is to share some secret in order to create a shared key between the client and server to begin autencrypt stream ciphering. This is done through diffie hellman key exchange. I assume that the server has already authenticated the client through some other method (password etc.), but the client authenticates the server by the servers signature on its first message. The server signs its gmod with its private RSA sig key. The client can then verify the authenticity of the gmod message with the supplied public RSA key. 
+
+After both having calculated a shared secret they hash the secret with the same hash function and use it seed an AuthEncrypt and AuthDecrypt object each. These will now have the same key. The two sides then hash a copy of the ongoing message history and concatonate it with a byte that is different for both sides. This byte ensures that MITM can not just send the history back, since the two versions of the history will be vastly different after using authEncrypt to encrypt the hashed history. Both sides then decrypt and slice out the history in order to compare with each other. They close the channel if there is a discrepancy. This whole history exchange is used to prevent MITM attacks since it ensures that both sides recieved exactly what was intended.
+
+Finally the two sides can set up a secure channel using the authEncrypt and authDecrypt to encrypt messages before being passed to the InsecureChannel to be sent and recieved.
+
+Freshness between session keys is ensured by both sides using a different PRGen rand for each session. This will make it impossible for an attacker who gained one key to decrypt messages from other sessions. 
+
+Messages are guarenteed to arrive in order, as authDecrypt will check that the MACs are right. If they come out of order the authDecrypt will return null, thus closing the channel.
+
+Replay attacks are avoided because every message is using a random nonce and will always be different regardless of the contents.
+
+
+USAGE:
+Create a SecureChannel with a newly created (and random) PRGen, RSAKey (public if client, private if server), an InputStream and OutputStream and a boolean to determine whether it is the server or client.
+
+Then just use sendMessage to send byte[] messages and receiveMessage to recieve messages. Expect all the security laid out above.
